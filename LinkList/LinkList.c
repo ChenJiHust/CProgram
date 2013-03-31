@@ -3,7 +3,7 @@
 #include "LinkList.h"
 
 //创建链表，头插法
-LinkList* CreateListF(ElemType a[],int n)
+LinkList* createListF(ElemType a[],int n)
 {
 	LinkList *s,*l = NULL;
 	int i;
@@ -18,7 +18,7 @@ LinkList* CreateListF(ElemType a[],int n)
 }
 
 //创建链表尾插法
-LinkList * CreateListR(ElemType a[],int n)
+LinkList * createListR(ElemType a[],int n)
 {
 	LinkList *l=NULL,*head=NULL,*tail=NULL;
 	int i = 0;
@@ -41,7 +41,7 @@ LinkList * CreateListR(ElemType a[],int n)
 
 
 //链表逆序，反转链表。类似头插法
-LinkList* ReverseList(LinkList * l)
+LinkList* reverseList(LinkList * l)
 {
 	LinkList *s = NULL,*head;
 	while(l!=NULL)
@@ -52,6 +52,60 @@ LinkList* ReverseList(LinkList * l)
 		s = head;
 	}
 	return s;
+}
+
+//链表环判断
+int hasCircle(LinkList *l)
+{
+	LinkList *fast = l,*slow = l;
+	while(fast)
+	{
+		fast = fast->next;
+		if(fast)
+		{
+			if(fast == slow)
+			{
+				return 1;
+			}
+			else
+			{
+				fast = fast->next;
+				slow = slow->next;
+			}
+		}
+	}
+	return 0;
+}
+
+
+//求环的长度。使用两个指针，快指针比慢指针速度快一赔。从首次相遇到第二次相遇的步数即环长
+int calCircleLengh(LinkList *l)
+{
+	LinkList *fast = l,*slow = l;
+	int count = 0;
+	while(fast)
+	{
+		fast = fast->next;
+		if(fast)
+		{
+			if(fast == slow)
+			{
+				if(count == 0)
+					count ++;
+				else
+					return count;
+			}
+			else
+			{
+				fast = fast->next;
+				slow = slow->next;
+				if(count)
+					count ++;
+			}
+		}
+	}
+	return 0;
+
 }
 
 void print(LinkList * l)
@@ -68,9 +122,19 @@ int main()
 {
 	LinkList *l = NULL,*s;
 	int a[8] = {5,2,6,9,0,1,4,3};
-	l = CreateListF(a,8);
+	l = createListF(a,8);
 	print(l);
-	l = ReverseList(l);
-	print(l);
+
+
+//	s = l;
+//	while(s->next)
+//		s = s->next;
+//	s->next = l->next;
+	printf("%d\n",calCircleLengh(l));
+
+
+//	print(l);
+//	l = reverseList(l);
+//	print(l);
 	return 0;
 }
